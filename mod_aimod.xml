@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0.0" client="site" method="upgrade">
+    <name>AIMod</name>
+    <author>Elias Ritter</author>
+    <version>1.0</version>
+    <description>AI driven Content Generator</description>
+    <license>GNU General Public License (GPL) 2.0 or later</license>
+    <files>
+        <filename>mod_aimod.xml</filename>
+        <filename module="mod_aimod">mod_aimod.php</filename>
+        <filename>index.html</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+        <filename>api/api.php</filename>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="content" type="textarea" default="" label="What should the AI create for you?" description="" rows="10" cols="5" />
+                <field name="showdate" type="radio" default="0" label="Show creation Date" class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="allowhtml" type="radio" default="1" label="Allow AI-generated HTML" class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="keepbr" type="radio" default="0" label="Keep AI-generated Line Breaks" class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field type="spacer" name="apicred" label="&lt;b&gt;API Credentials&lt;/b&gt;" />
+                <field name="authorization" type="text" label="API Authorization Key" />
+                <!--<field name="organization" type="text" label="Organization ID" />-->
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="Elias-Update-Service">https://eliasritter.de/aimodule/update.xml</server>
+    </updateservers>
+</extension>
