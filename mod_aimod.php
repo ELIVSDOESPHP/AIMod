@@ -54,8 +54,6 @@ if(!class_exists('requestHelper')) {
 
         public function __construct($cachedir, $module, $params, $creds)
         {
-
-            $application = JFactory::getApplication();
             $this->cache = $cachedir;
 
             try {
@@ -80,6 +78,7 @@ if(!class_exists('requestHelper')) {
                     $this->getCachedResponse();
                 }
             } catch (Throwable $t) {
+                global $application;
                 $application->enqueueMessage('AIModule: ' . $t->getMessage(), 'error');
             }
         }
@@ -87,12 +86,22 @@ if(!class_exists('requestHelper')) {
         private function CreateNewResponse(): void
         {
             /** @noinspection PhpUndefinedClassInspection */
-            $session = new openAI_Interface($this->creds);
-            $text = $session->createText($this->params->get('content'));
+            $session                  = new openAI_Interface($this->creds);
+            $text                     = $session->createText($this->params->get('content'));
 
             $this->return->written    = time();
-            $this->return->response   = $text;
+            $this->return->response   = static::removeMisplacedChars($text, array('.'));
             $this->return->request    = $this->params->get('content');
+        }
+
+        private static function removeMisplacedChars($text, $filter): string
+        {
+            $text = trim($text);
+            if(in_array(mb_substr($text, 0, 1), $filter)) {
+                return mb_substr($text, 1);
+            } else {
+                return $text;
+            }
         }
 
         private function cacheResponse(): void
